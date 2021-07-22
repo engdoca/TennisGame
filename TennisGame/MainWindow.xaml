@@ -1,0 +1,155 @@
+﻿<Window x:Class="TennisGame.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TennisGame.Model"
+        xmlns:conv="clr-namespace:TennisGame.Converters"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+        <conv:ValueToGamePointsConverter x:Key="ValueToGamePointsConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <local:GameViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="txbTitle" 
+                   Grid.Row="0" Grid.Column="0" 
+                   Grid.ColumnSpan="4" 
+                   Text="Tennis game" 
+                   FontSize="30" 
+                   FontWeight="Bold"
+                   MaxHeight="50"
+                   MinHeight="50"
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"
+                   >
+        </TextBlock>
+        <TextBlock x:Name="txbFirstPlayer" 
+                   Grid.Row="1"
+                   Grid.Column="0" 
+                   Text="First player" 
+                   FontSize="15" 
+                   FontWeight="DemiBold" 
+                   Margin="10,10,5,0">
+        </TextBlock>
+        <TextBox x:Name="txtFirstPlayerName" 
+                 Grid.Row="1" 
+                 Grid.Column="1" 
+                 Text="{Binding FirstPlayerName, Mode=OneWay}" 
+                 FontSize="15" Margin="0,10,40,10"
+                 TextWrapping="NoWrap"
+                 MaxHeight="50"
+                 MaxLines="1"
+                 VerticalAlignment="Top"
+                 IsReadOnly="True"
+                 BorderThickness="0">
+        </TextBox>
+        <TextBox x:Name="txtPoints" 
+                 Grid.Row="2" 
+                 Grid.Column="0"
+                 Grid.ColumnSpan="4"
+                 FontSize="15" Margin="10,10,0,0"
+                 TextWrapping="Wrap"
+                 MaxHeight="50"
+                 MaxLines="1"
+                 VerticalAlignment="Top"
+                 BorderThickness="0"
+                 IsReadOnly="True">
+            <TextBox.Text>
+                <MultiBinding Converter="{StaticResource ValueToGamePointsConverter}">
+                    <Binding Path="FirstPlayerPoints" Mode="OneWay" UpdateSourceTrigger="PropertyChanged"></Binding>
+                    <Binding Path="SecondPlayerPoints" Mode="OneWay" UpdateSourceTrigger="PropertyChanged"></Binding>
+                </MultiBinding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBlock x:Name="txbSecondPlayer" 
+                   Grid.Row="1" 
+                   Grid.Column="2" 
+                   Text="Second player" 
+                   FontSize="15" 
+                   FontWeight="DemiBold" 
+                   Margin="0,10,5,0">
+        </TextBlock>
+        <TextBox x:Name="txtSecondPlayerName" 
+                 Grid.Row="1" 
+                 Grid.Column="3" 
+                 Text="{Binding SecondPlayerName, Mode=OneWay}" 
+                 FontSize="15" 
+                 Margin="0,10,10,0"
+                 TextWrapping="NoWrap"
+                 MaxHeight="50"
+                 MaxLines="1"
+                 VerticalAlignment="Top"
+                 IsReadOnly="True"
+                 BorderThickness="0">
+        </TextBox>
+        <TextBlock x:Name="txbInfo" 
+                   Grid.Row="3" 
+                   Grid.Column="0" 
+                   Grid.ColumnSpan="4" 
+                   Text="Click one of the two buttons below to assign the point to one of the two players" 
+                   FontSize="15" 
+                   FontWeight="DemiBold"
+                   Margin="10,10,5,0">
+        </TextBlock>
+        <!--<TextBlock x:Name="txbFirstPlayer" 
+                   Grid.Row="4"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="4"
+                   Text="Click one of the two buttons below to assign the point to one of the two players" 
+                   FontSize="10" 
+                   FontWeight="DemiBold" 
+                   Margin="10,10,5,0">
+        </TextBlock>-->
+        <Button x:Name="btnFirstPlayerPoint" 
+                Grid.Row="4"
+                Grid.Column="0"
+                Content="Point"
+                Margin="10,10,5,0"
+                HorizontalAlignment="Left"
+                Click="ButtonUpdateScore_Click"
+                IsEnabled="{Binding IsNotFinished, Mode=OneWay}"/>
+        <Button x:Name="btnSecondPlayerPoint" 
+                Grid.Row="4" 
+                Grid.Column="2" 
+                Content="Point" 
+                Margin="0,10,5,0"
+                HorizontalAlignment="Left"
+                Click="ButtonUpdateScore_Click"
+                IsEnabled="{Binding IsNotFinished, Mode=OneWay}"/>
+        <TextBox x:Name="txtGameReport" 
+                 Grid.Row="5" 
+                 Grid.Column="0"
+                 Grid.ColumnSpan="4"
+                 Text="{Binding Report, Mode=OneWay}" 
+                 FontSize="15" Margin="5,10,5,5"
+                 TextWrapping="Wrap"
+                 MaxHeight="400"
+                 AcceptsReturn="True"
+                 VerticalAlignment="Top"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 IsReadOnly="True">
+        </TextBox>
+    </Grid>
+</Window>
