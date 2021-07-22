@@ -25,7 +25,7 @@ namespace TennisGame.Converters
                     string secRes;
                     firRes = PointsToGamePoints(firstResult);
                     secRes = PointsToGamePoints(secondResult);
-                if (firRes == "Undefined" || secRes == "Undefined")
+                if (firRes.Equals("Undefined") || secRes.Equals("Undefined"))
                 {
                     if (firstResult == secondResult)
                         return Parity;
